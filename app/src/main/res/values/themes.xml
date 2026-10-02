@@ -96,6 +96,14 @@
     <!-- Monet theme only support S+ -->
     <style name="Theme.Tachiyomi.Monet" />
 
+    <!--== KuroYomi Signature Dark Theme ==-->
+    <style name="Theme.Tachiyomi.KuroYomi" parent="Base.Theme.Tachiyomi">
+        <item name="android:colorBackground">@color/amoled_surface</item>
+        <item name="colorSurface">@color/amoled_surface</item>
+        <item name="colorSurfaceContainerLowest">@color/amoled_surface</item>
+        <item name="android:navigationBarColor">@color/amoled_surface</item>
+    </style>
+
     <!--== Catppuccin Theme ==-->
     <style name="Theme.Tachiyomi.Catppuccin">
         <!-- Theme Colors -->
@@ -135,6 +143,7 @@
         <item name="colorSurfaceContainerLow">@color/catppuccin_surfaceContainerLow</item>
         <item name="colorSurfaceContainerLowest">@color/catppuccin_surfaceContainerLowest</item>
     </style>
+
     <!--== Green Apple Theme ==-->
     <style name="Theme.Tachiyomi.GreenApple">
         <!-- Theme Colors -->
@@ -539,7 +548,7 @@
     <!--== Splash Theme ==-->
     <style name="Theme.Tachiyomi.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_tachi_splash</item>
-        <item name="windowSplashScreenBackground">@color/splash</item>
+        <item name="windowSplashScreenBackground">@color/amoled_surface</item>
         <item name="postSplashScreenTheme">@style/Theme.Tachiyomi</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
