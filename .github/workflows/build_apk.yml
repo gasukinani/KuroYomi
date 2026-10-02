@@ -34,9 +34,21 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # AUTOMATIC REBRANDING: Hinahanap at pinapalitan lahat ng "TachiyomiSY" -> "KuroYomi"
+      - name: Replace TachiyomiSY with KuroYomi across all files
+        run: |
+          echo "Scanning and rebranding to KuroYomi..."
+          find . -type f \( -name "*.xml" -o -name "*.kt" -o -name "*.kts" -o -name "*.properties" -o -name "*.json" \) \
+            -not -path "./.git/*" \
+            -not -path "./.github/*" \
+            -exec sed -i 's/TachiyomiSY/KuroYomi/g' {} +
+          echo "All instances of TachiyomiSY have been replaced with KuroYomi!"
+
+      # Nag-bu-build ng official Release split APKs
       - name: Build Release APKs
         run: ./gradlew assembleRelease
 
+      # Kusa tayong gagawa ng keystore at i-sa-sign lang ang arm64 APK
       - name: Sign arm64-v8a APK
         run: |
           mkdir -p output
@@ -46,6 +58,7 @@ jobs:
           $APKSIGNER sign --ks release.jks --ks-key-alias kuroyomi --ks-pass pass:password123 --key-pass pass:password123 --out output/KuroYomi-arm64-v8a.apk "$ARM64_APK"
           ls -lh output/KuroYomi-arm64-v8a.apk
 
+      # I-upload ang magaan na arm64-v8a APK (~25MB hanggang ~35MB lang)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
