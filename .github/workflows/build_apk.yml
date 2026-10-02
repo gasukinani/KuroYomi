@@ -1,4 +1,4 @@
- name: Build KuroYomi Release (arm64-v8a)
+name: Build KuroYomi Release (arm64-v8a)
 
 on:
   push:
@@ -34,32 +34,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Nag-bu-build ng official Release split APKs (walang debug overhead)
       - name: Build Release APKs
         run: ./gradlew assembleRelease
 
-      # Kusa tayong gagawa ng keystore at i-sa-sign lang ang arm64 APK
       - name: Sign arm64-v8a APK
         run: |
           mkdir -p output
-          
-          # 1. Generate local keystore para mai-sign
-          keytool -genkeypair -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 \
-            -alias kuroyomi -storepass password123 -keypass password123 \
-            -dname "CN=KuroYomi, O=KuroYomi, C=PH"
-
-          # 2. Hanapin ang unsigned arm64 release apk
+          keytool -genkeypair -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias kuroyomi -storepass password123 -keypass password123 -dname "CN=KuroYomi, O=KuroYomi, C=PH"
           ARM64_APK=$(find app/build/outputs/apk/release -name "*arm64-v8a*.apk" | head -n 1)
-          
-          # 3. I-sign gamit ang Android SDK apksigner
           APKSIGNER=$(find $ANDROID_SDK_ROOT/build-tools -name apksigner | sort -r | head -n 1)
-          $APKSIGNER sign --ks release.jks --ks-key-alias kuroyomi --ks-pass pass:password123 --key-pass pass:password123 \
-            --out output/KuroYomi-arm64-v8a.apk "$ARM64_APK"
-
-          echo "Sign complete! APK size:"
+          $APKSIGNER sign --ks release.jks --ks-key-alias kuroyomi --ks-pass pass:password123 --key-pass pass:password123 --out output/KuroYomi-arm64-v8a.apk "$ARM64_APK"
           ls -lh output/KuroYomi-arm64-v8a.apk
 
-      # I-upload ang magaan na arm64-v8a APK (~25MB hanggang ~35MB lang)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
